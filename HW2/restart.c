@@ -27,10 +27,12 @@ void readImageFile(int fd)
     }
     char buffer;
     unsigned long int size = 0;
+    unsigned long int hex = 0; 	  
     while(size < layout.size)
     {
     	read(fd,&buffer,sizeof(char));
-        *pu = buffer;
+	hex = strtol(buffer, NULL,16);
+        *pu = hex;
     	size++;
     }
   }while( read_val != 0);
