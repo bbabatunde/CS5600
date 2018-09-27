@@ -17,7 +17,7 @@ void readImageFile(int fd)
   do
   {
   read_val = read(fd, &layout, sizeof(struct MemoryRegion));
-  char* pu;
+  unsigned long int* pu;
   pu = mmap((void *)layout.startAddr, layout.size,\
 		 layout.isReadable |PROT_WRITE |layout.isExecutable,
 		MAP_PRIVATE|MAP_ANONYMOUS,-1, 0);
