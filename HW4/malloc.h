@@ -11,3 +11,5 @@ extern pthread_mutex_t mutex;
 void *calloc(size_t nmemb, size_t size);
 void *malloc(size_t size);
 void *realloc(void *ptr, size_t size);
+//void malloc_stats();
+void free(void* ptr);

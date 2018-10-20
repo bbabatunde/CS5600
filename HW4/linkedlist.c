@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -28,7 +29,7 @@ int valid_addr(void *p)
 {
         if(base)
         {
-                if(p >base && p<sbrk(0))
+                if(p >heap && p<endp)
                 {
                         return (p == (get_block(p))->ptr);
                 }
@@ -45,6 +46,7 @@ t_block fusion(t_block b){
           if(b->next)
                         b->next->prev = b;
         }
+        total_no_of_blocks -= 1;
         return b;
 }
 
@@ -59,6 +61,7 @@ void split_block(t_block b, size_t s)
         new->ptr = new->data;
         b->size = s;
         b->next = new;
+	total_no_of_blocks += 1;
         if(new->next)
            new->next->prev = new;
 
@@ -75,11 +78,28 @@ t_block find_block(t_block *last, size_t size)
 
 }
 
+void* request_space(size_t size)
+{
+  if(size == 0)
+	return(void *)brkp;
+   void *free = (void *) brkp;
+   brkp +=size;
+   if(brkp >= endp)
+   {
+	errno = ENOENT;
+	return NULL;
+   }
+   return free;
+
+
+
+}
+
 t_block extend_heap(t_block last, size_t s){
    t_block b;
-   b = sbrk(0);
-   if(sbrk(BLOCK_SIZE + s) == (void *) 1)
-        return NULL;
+   b = request_space(BLOCK_SIZE + s);
+
+   total_no_of_blocks += s;
 
    b->size = s;
    b->next = NULL;

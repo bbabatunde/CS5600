@@ -5,6 +5,7 @@
 void free(void *ptr)
 {
   pthread_mutex_lock(&mutex);
+  total_free_requests += 1;
   t_block b;
   if(valid_addr(ptr))
   {
@@ -20,7 +21,9 @@ void free(void *ptr)
                         b->prev->next = NULL;
                 else    
                         base = NULL;
-                brk(b);
+		brkp-=b->size;
+		free_blocks += b->size;
+                //brk(b);
 
         }
 

@@ -1,4 +1,5 @@
 #include<pthread.h>
+#include<errno.h>
 #include "malloc.h"
 
 
@@ -41,6 +42,7 @@ void *realloc(void *ptr, size_t size)
                         if(!newp)
 			{
  			    pthread_mutex_unlock(&mutex);
+			    errno = ENOENT;
                             return NULL;
 			}
                         new = get_block(newp);
@@ -57,6 +59,7 @@ void *realloc(void *ptr, size_t size)
   }
 
   pthread_mutex_unlock(&mutex);
+  errno = ENOENT;
   return NULL;
 }
 
