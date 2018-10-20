@@ -6,5 +6,6 @@ Used a linkedlist t_block to manage memory allocation with capability to split b
 
 #Design decisions 
 Initial implemented memory allocation using sbrk to switched to mmap for better controll over memory manipulation
+
 #Known bugs and errors
 Know that I am aware of
